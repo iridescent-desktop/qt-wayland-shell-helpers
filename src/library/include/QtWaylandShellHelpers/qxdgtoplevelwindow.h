@@ -10,27 +10,35 @@
  * from the use of this software.
  */
 
-#ifndef QTWAYLANDSHELLHELPERS_QWAYLANDSHELLAPPLICATION_H
-#define QTWAYLANDSHELLHELPERS_QWAYLANDSHELLAPPLICATION_H
+#ifndef QTWAYLANDSHELLHELPERS_QXDGTOPLEVELWINDOW_H
+#define QTWAYLANDSHELLHELPERS_QXDGTOPLEVELWINDOW_H
 
 #include <QApplication>
+#include <QWidget>
 
 #include <wayland-client.h>
 
+#include <QtWaylandShellHelpers/qwaylandshellapplication.h>
+
+struct wl_output;
+struct wl_seat;
+struct wl_surface;
+struct xdg_popup;
+struct xdg_positioner;
+struct xdg_surface;
+struct xdg_toplevel;
+struct xdg_wm_base;
+
 namespace QtWaylandShellHelpers {
 
-class QWaylandShellApplication : public ::QApplication
+class QXdgToplevelWindow : public QWidget
 {
-  Q_OBJECT
-
 public:
-  QWaylandShellApplication(int &argc, char **argv, int = ApplicationFlags);
-  ~QWaylandShellApplication();
-
-  struct ::wl_display *display() const { return mDisplay; }
+    QXdgToplevelWindow(QWidget *parent = nullptr);
+    ~QXdgToplevelWindow();
 
 private:
-  struct ::wl_display *mDisplay;
+    QWaylandShellApplication *mApp = nullptr;
 };
 
 }

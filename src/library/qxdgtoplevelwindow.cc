@@ -10,20 +10,22 @@
  * from the use of this software.
  */
 
-#include <QtWaylandShellHelpers/qwaylandshellapplication.h>
+#include <cstdio>
 #include <QtWaylandShellHelpers/qxdgtoplevelwindow.h>
-#include <QWidget>
-#include <QLabel>
 
-int
-main(int argc, char **argv)
+using namespace QtWaylandShellHelpers;
+
+QXdgToplevelWindow::QXdgToplevelWindow(QWidget *parent)
+    : QWidget(parent)
 {
-	QtWaylandShellHelpers::QWaylandShellApplication app(argc, argv);
+	mApp = qobject_cast<QWaylandShellApplication *>(qApp);
+	if (mApp == nullptr)
+	{
+		fprintf(stderr, "Attempting to make QXdgToplevelWindow without QWaylandShellApplication.\n");
+		abort();
+	}
+}
 
-	QtWaylandShellHelpers::QXdgToplevelWindow *root = new QtWaylandShellHelpers::QXdgToplevelWindow;
-	QWidget *hello = new QLabel("Hello world!", root);
-
-	root->show();
-
-	return app.exec();
+QXdgToplevelWindow::~QXdgToplevelWindow()
+{
 }

@@ -28,3 +28,5 @@ QWaylandShellApplication::QWaylandShellApplication(int &argc, char **argv, int f
 QWaylandShellApplication::~QWaylandShellApplication()
 {
 }
+
+#include "qwaylandshellapplication.moc"

@@ -10,20 +10,15 @@
  * from the use of this software.
  */
 
-#include <QtWaylandShellHelpers/qwaylandshellapplication.h>
-#include <QtWaylandShellHelpers/qxdgtoplevelwindow.h>
-#include <QWidget>
-#include <QLabel>
+#ifndef QTWAYLANDSHELLHELPERS_QLAYERSHELLWINDOW_H
+#define QTWAYLANDSHELLHELPERS_QLAYERSHELLWINDOW_H
 
-int
-main(int argc, char **argv)
-{
-	QtWaylandShellHelpers::QWaylandShellApplication app(argc, argv);
+#include <QApplication>
 
-	QtWaylandShellHelpers::QXdgToplevelWindow *root = new QtWaylandShellHelpers::QXdgToplevelWindow;
-	QWidget *hello = new QLabel("Hello world!", root);
+#include <wayland-client.h>
 
-	root->show();
+namespace QtWaylandShellHelpers {
 
-	return app.exec();
 }
+
+#endif
