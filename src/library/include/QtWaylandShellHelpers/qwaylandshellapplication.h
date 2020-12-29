@@ -15,13 +15,20 @@
 
 #include <QApplication>
 
+#include <wayland-client.h>
+
 namespace QtWaylandShellHelpers {
 
-class QWaylandShellApplication : public QApplication
+class QWaylandShellApplication : public ::QApplication
 {
 public:
   QWaylandShellApplication(int &argc, char **argv, int = ApplicationFlags);
   ~QWaylandShellApplication();
+
+  struct ::wl_display *display() const { return mDisplay; }
+
+private:
+  struct ::wl_display *mDisplay;
 };
 
 }

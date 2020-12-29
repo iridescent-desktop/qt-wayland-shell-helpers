@@ -12,12 +12,17 @@
 
 #include <QtWaylandShellHelpers/qwaylandshellapplication.h>
 
+#include <qpa/qplatformnativeinterface.h>
+
 using namespace QtWaylandShellHelpers;
 
 QWaylandShellApplication::QWaylandShellApplication(int &argc, char **argv, int flags)
     : QApplication(argc, argv, flags)
 {
 	::setenv("QT_WAYLAND_SHELL_INTEGRATION", "qwaylandshellhelpers", 1);
+
+	QPlatformNativeInterface *native = platformNativeInterface();
+	mDisplay = (struct wl_display *) native->nativeResourceForWindow("display", NULL);
 }
 
 QWaylandShellApplication::~QWaylandShellApplication()
