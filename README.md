@@ -20,3 +20,7 @@ Instead of using `QApplication`, use `QtWaylandShellHelpers::QWaylandShellApplic
 then you can use `QtWaylandShellHelpers::QXdgToplevelWindow` or
 `QtWaylandShellHelpers::QLayerShellWindow` depending on what you want to create.  If
 you need something else, you can create your own subclasses of `QWidget`.
+
+For a real world example, see [Melusine][melusine].
+
+   [melusine]: https://github.com/iridescent-project/melusine
