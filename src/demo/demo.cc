@@ -14,6 +14,22 @@
 #include <QtWaylandShellHelpers/qxdgtoplevelwindow.h>
 #include <QWidget>
 #include <QLabel>
+#include <QVBoxLayout>
+#include <QPushButton>
+
+QWidget *
+make_example_xdg_toplevel_window()
+{
+	QtWaylandShellHelpers::QXdgToplevelWindow *root = new QtWaylandShellHelpers::QXdgToplevelWindow;
+	root->setWindowTitle("Demo");
+
+	QVBoxLayout *vbox = new QVBoxLayout(root);
+
+	QWidget *hello = new QLabel("This is an XDG Toplevel Window.");
+	vbox->addWidget(hello);
+
+	return root;
+}
 
 int
 main(int argc, char **argv)
@@ -21,9 +37,23 @@ main(int argc, char **argv)
 	QtWaylandShellHelpers::QWaylandShellApplication app(argc, argv);
 
 	QtWaylandShellHelpers::QXdgToplevelWindow *root = new QtWaylandShellHelpers::QXdgToplevelWindow;
-	QWidget *hello = new QLabel("Hello world!", root);
+	root->setWindowTitle("Demo Main Menu");
 
-	root->setWindowTitle("Demo");
+	QVBoxLayout *vbox = new QVBoxLayout(root);
+
+	QWidget *welcomeLabel = new QLabel("Welcome to the QtWaylandShellHelpers demo program!");
+	vbox->addWidget(welcomeLabel);
+
+	auto newXdgWindow = new QPushButton("Open new XDG Toplevel window");
+	QWidget::connect(newXdgWindow, &QAbstractButton::clicked, [=] (bool checked) {
+		auto win = make_example_xdg_toplevel_window();
+		win->show();
+	});
+	vbox->addWidget(newXdgWindow);
+
+	auto newLayerShellWindow = new QPushButton("Open new wlr-layer-shell panel");
+	vbox->addWidget(newLayerShellWindow);
+
 	root->show();
 
 	return app.exec();
