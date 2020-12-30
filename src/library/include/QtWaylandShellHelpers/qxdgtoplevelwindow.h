@@ -13,6 +13,7 @@
 #ifndef QTWAYLANDSHELLHELPERS_QXDGTOPLEVELWINDOW_H
 #define QTWAYLANDSHELLHELPERS_QXDGTOPLEVELWINDOW_H
 
+#include <cstdint>
 #include <QApplication>
 #include <QWidget>
 
@@ -28,6 +29,7 @@ struct xdg_positioner;
 struct xdg_surface;
 struct xdg_toplevel;
 struct xdg_wm_base;
+struct zxdg_toplevel_decoration_v1;
 
 namespace QtWaylandShellHelpers {
 
@@ -37,8 +39,22 @@ public:
     QXdgToplevelWindow(QWidget *parent = nullptr);
     ~QXdgToplevelWindow();
 
+    void showEvent(QShowEvent *event);
+    void resizeEvent(QResizeEvent *event);
+
+    void setClientSideWindowDecoration(bool csd);
+
+    static void wlConfigureEvent(void *data, ::xdg_surface *xdg_surface, uint32_t serial);
+
 private:
+    void getSurfaces();
+
     QWaylandShellApplication *mApp = nullptr;
+
+    ::wl_surface *mSurface;
+    ::xdg_surface *mXdgSurface;
+    ::xdg_toplevel *mXdgToplevel;
+    ::zxdg_toplevel_decoration_v1 *mXdgToplevelDecoration;
 };
 
 }

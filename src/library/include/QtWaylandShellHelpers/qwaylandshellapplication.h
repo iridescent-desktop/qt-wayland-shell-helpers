@@ -13,9 +13,14 @@
 #ifndef QTWAYLANDSHELLHELPERS_QWAYLANDSHELLAPPLICATION_H
 #define QTWAYLANDSHELLHELPERS_QWAYLANDSHELLAPPLICATION_H
 
+#include <cstdint>
 #include <QApplication>
 
 #include <wayland-client.h>
+
+struct xdg_wm_base;
+struct zxdg_decoration_manager_v1;
+struct zwlr_layer_shell_v1;
 
 namespace QtWaylandShellHelpers {
 
@@ -27,10 +32,21 @@ public:
   QWaylandShellApplication(int &argc, char **argv, int = ApplicationFlags);
   ~QWaylandShellApplication();
 
-  struct ::wl_display *display() const { return mDisplay; }
+  ::wl_display *display() const { return mDisplay; }
+  ::wl_registry *registry() const { return mRegistry; }
+  ::xdg_wm_base *xdg_wm_base() const { return mXdgWmBase; }
+  ::zxdg_decoration_manager_v1 *zxdg_decoration_manager_v1() const { return mXdgDecorationManagerV1; }
+  ::zwlr_layer_shell_v1 *zwlr_layer_shell_v1() const { return mWlrLayerShellV1; }
+
+  static void registryListener(void *data, ::wl_registry *registry, uint32_t name, const char *interface, uint32_t version);
+  static void registryRemoveListener(void *data, ::wl_registry *registry, uint32_t name);
 
 private:
-  struct ::wl_display *mDisplay;
+  ::wl_display *mDisplay;
+  ::wl_registry *mRegistry;
+  ::xdg_wm_base *mXdgWmBase;
+  ::zxdg_decoration_manager_v1 *mXdgDecorationManagerV1;
+  ::zwlr_layer_shell_v1 *mWlrLayerShellV1;
 };
 
 }
