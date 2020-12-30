@@ -27,6 +27,14 @@ libqtwaylandshellhelpers = library('qtwaylandshellhelpers', [
 
 libqtwaylandshellhelpers_dep = declare_dependency(
   link_with: libqtwaylandshellhelpers,
-  include_directories: [libqtwaylandshellhelpers_inc, qt_private],
+  include_directories: [libqtwaylandshellhelpers_inc],
   dependencies: [qt, wayland_client, client_protos],
+)
+
+pkg = import('pkgconfig')
+pkg.generate(libqtwaylandshellhelpers,
+  name: 'QtWaylandShellHelpers',
+  description: 'a library for using arbitrary Wayland surfaces with Qt',
+  url: 'http://github.com/iridescent-desktop/qt-wayland-shell-helpers',
+  requires: ['Qt5Core', 'Qt5Gui', 'Qt5Widgets', 'Qt5WaylandClient', wayland_client],
 )
