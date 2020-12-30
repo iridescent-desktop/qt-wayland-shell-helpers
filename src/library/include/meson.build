@@ -6,4 +6,4 @@ libqtwaylandshellhelpers_headers = [
   'QtWaylandShellHelpers/qlayershellwindow.h',
 ]
 
-install_headers(libqtwaylandshellhelpers_headers)
+install_headers(libqtwaylandshellhelpers_headers, subdir: 'QtWaylandShellHelpers')
