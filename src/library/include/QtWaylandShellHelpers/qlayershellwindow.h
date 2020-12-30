@@ -58,6 +58,7 @@ public:
     void setExclusiveZone(int32_t zone);
     void setMargins(int32_t top, int32_t right, int32_t bottom, int32_t left);
     void setKeyboardInteractivity(bool interactivity);
+    void setExpansionAxis(bool horizontal, bool vertical);
 
     static void wlSurfaceConfigureEvent(void *data, ::zwlr_layer_surface_v1 *layer, uint32_t serial, uint32_t width, uint32_t height);
     static void wlSurfaceCloseEvent(void *data, ::zwlr_layer_surface_v1 *layer);
@@ -78,6 +79,8 @@ private:
     int32_t mMarginBottom = 0;
     int32_t mMarginLeft = 0;
     bool mKeyboardInteractivity = false;
+    bool mExpandHorizontal = true;
+    bool mExpandVertical = false;
 };
 
 }

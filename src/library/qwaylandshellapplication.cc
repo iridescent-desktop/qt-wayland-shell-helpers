@@ -31,7 +31,7 @@ QWaylandShellApplication::registryListener(void *data, ::wl_registry *registry, 
 	else if (!::strcmp(interface, ::zxdg_decoration_manager_v1_interface.name))
 		app->mXdgDecorationManagerV1 = (::zxdg_decoration_manager_v1 *) ::wl_registry_bind(registry, name, &::zxdg_decoration_manager_v1_interface, 1);
 	else if (!::strcmp(interface, ::zwlr_layer_shell_v1_interface.name))
-		app->mWlrLayerShellV1 = (::zwlr_layer_shell_v1 *) ::wl_registry_bind(registry, name, &::zwlr_layer_shell_v1_interface, 1);
+		app->mWlrLayerShellV1 = (::zwlr_layer_shell_v1 *) ::wl_registry_bind(registry, name, &::zwlr_layer_shell_v1_interface, 2);
 }
 
 void

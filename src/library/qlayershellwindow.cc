@@ -66,7 +66,7 @@ QLayerShellWindow::wlSurfaceConfigureEvent(void *data, ::zwlr_layer_surface_v1 *
 	if (!width || !height)
 		return;
 
-	win->resize(width, height);
+	win->resize(win->mExpandHorizontal ? width : win->width(), win->mExpandVertical ? height : win->height());
 	::zwlr_layer_surface_v1_ack_configure(win->mLayerSurface, serial);
 }
 
@@ -131,6 +131,14 @@ void
 QLayerShellWindow::setExclusiveZone(int32_t zone)
 {
 	mExclusiveZone = zone;
+	commit();
+}
+
+void
+QLayerShellWindow::setExpansionAxis(bool horizontal, bool vertical)
+{
+	mExpandHorizontal = horizontal;
+	mExpandVertical = vertical;
 	commit();
 }
 
