@@ -23,6 +23,7 @@ main(int argc, char **argv)
 	QtWaylandShellHelpers::QXdgToplevelWindow *root = new QtWaylandShellHelpers::QXdgToplevelWindow;
 	QWidget *hello = new QLabel("Hello world!", root);
 
+	root->setWindowTitle("Demo");
 	root->show();
 
 	return app.exec();

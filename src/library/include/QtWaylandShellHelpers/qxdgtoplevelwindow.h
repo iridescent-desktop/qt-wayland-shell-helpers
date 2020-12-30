@@ -41,10 +41,16 @@ public:
 
     void showEvent(QShowEvent *event);
     void resizeEvent(QResizeEvent *event);
+    void windowTitleChanged(const QString &title);
+
+    void updateWindowTitle();
 
     void setClientSideWindowDecoration(bool csd);
 
-    static void wlConfigureEvent(void *data, ::xdg_surface *xdg_surface, uint32_t serial);
+    static void wlSurfaceConfigureEvent(void *data, ::xdg_surface *xdg_surface, uint32_t serial);
+
+    static void wlToplevelConfigureEvent(void *data, ::xdg_toplevel *xdg_toplevel, int32_t width, int32_t height, ::wl_array *states);
+    static void wlToplevelCloseEvent(void *data, ::xdg_toplevel *xdg_toplevel);
 
 private:
     void getSurfaces();

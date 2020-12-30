@@ -29,6 +29,7 @@ QXdgToplevelWindow::QXdgToplevelWindow(QWidget *parent)
 		abort();
 	}
 
+	// XXX: this totally breaks when CSD is actually needed
 	setWindowFlags(Qt::FramelessWindowHint);
 }
 
@@ -37,11 +38,34 @@ QXdgToplevelWindow::~QXdgToplevelWindow()
 }
 
 void
-QXdgToplevelWindow::wlConfigureEvent(void *data, ::xdg_surface *xdg_surface, uint32_t serial)
+QXdgToplevelWindow::windowTitleChanged(const QString &title)
+{
+	updateWindowTitle();
+}
+
+void
+QXdgToplevelWindow::wlSurfaceConfigureEvent(void *data, ::xdg_surface *xdg_surface, uint32_t serial)
+{
+	::xdg_surface_ack_configure(xdg_surface, serial);
+}
+
+void
+QXdgToplevelWindow::wlToplevelConfigureEvent(void *data, ::xdg_toplevel *xdg_toplevel, int32_t width, int32_t height, ::wl_array *states)
 {
 	auto win = static_cast<QXdgToplevelWindow *>(data);
 
-	::xdg_surface_ack_configure(xdg_surface, serial);
+	if (!width || !height)
+		return;
+
+	win->resize(width, height);
+}
+
+void
+QXdgToplevelWindow::wlToplevelCloseEvent(void *data, ::xdg_toplevel *xdg_toplevel)
+{
+	auto win = static_cast<QXdgToplevelWindow *>(data);
+
+	win->close();
 }
 
 void
@@ -58,7 +82,7 @@ QXdgToplevelWindow::getSurfaces()
 		mXdgSurface = ::xdg_wm_base_get_xdg_surface(xdg, mSurface);
 
 		static ::xdg_surface_listener surface_listener = {
-			.configure = QXdgToplevelWindow::wlConfigureEvent,
+			.configure = QXdgToplevelWindow::wlSurfaceConfigureEvent,
 		};
 
 		::xdg_surface_add_listener(mXdgSurface, &surface_listener, this);
@@ -67,6 +91,13 @@ QXdgToplevelWindow::getSurfaces()
 	if (mXdgSurface != nullptr && mXdgToplevel == nullptr)
 	{
 		mXdgToplevel = ::xdg_surface_get_toplevel(mXdgSurface);
+
+		static ::xdg_toplevel_listener toplevel_listener = {
+			.configure = QXdgToplevelWindow::wlToplevelConfigureEvent,
+			.close = QXdgToplevelWindow::wlToplevelCloseEvent,
+		};
+
+		::xdg_toplevel_add_listener(mXdgToplevel, &toplevel_listener, this);
 		::wl_surface_commit(mSurface);
 	}
 }
@@ -106,6 +137,17 @@ QXdgToplevelWindow::showEvent(QShowEvent *event)
 	getSurfaces();
 
 	setClientSideWindowDecoration(false);
+	updateWindowTitle();
 
 	QWidget::showEvent(event);
+}
+
+void
+QXdgToplevelWindow::updateWindowTitle()
+{
+	getSurfaces();
+
+	auto title = windowTitle().toLocal8Bit();
+
+	::xdg_toplevel_set_title(mXdgToplevel, title);
 }
