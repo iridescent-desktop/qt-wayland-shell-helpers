@@ -10,7 +10,6 @@
  * from the use of this software.
  */
 
-#include <cstdio>
 #include <QDebug>
 #include <QtWaylandShellHelpers/qxdgtoplevelwindow.h>
 #include <qpa/qplatformnativeinterface.h>
@@ -25,7 +24,7 @@ QXdgToplevelWindow::QXdgToplevelWindow(QWidget *parent)
 	mApp = qobject_cast<QWaylandShellApplication *>(qApp);
 	if (mApp == nullptr)
 	{
-		fprintf(stderr, "Attempting to make QXdgToplevelWindow without QWaylandShellApplication.\n");
+		qDebug() << "Attempting to make QXdgToplevelWindow without QWaylandShellApplication is not supported";
 		abort();
 	}
 
