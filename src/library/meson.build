@@ -7,6 +7,7 @@ subdir('include')
 libqtwaylandshellhelpers_src = [
   'qwaylandshellapplication.cc',
   'qxdgtoplevelwindow.cc',
+  'qlayershellwindow.cc',
 ]
 
 libqtwaylandshellhelpers_moc_src = [
