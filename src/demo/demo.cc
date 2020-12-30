@@ -12,10 +12,30 @@
 
 #include <QtWaylandShellHelpers/qwaylandshellapplication.h>
 #include <QtWaylandShellHelpers/qxdgtoplevelwindow.h>
+#include <QtWaylandShellHelpers/qlayershellwindow.h>
 #include <QWidget>
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
+
+QWidget *
+make_example_panel()
+{
+	QtWaylandShellHelpers::QLayerShellWindow *panel = new QtWaylandShellHelpers::QLayerShellWindow;
+	QHBoxLayout *hbox = new QHBoxLayout(panel);
+
+	panel->setExpansionAxis(true, false);
+	panel->setLayer(QtWaylandShellHelpers::QLayerShellWindow::Layer::Top);
+	panel->setAnchor(static_cast<QtWaylandShellHelpers::QLayerShellWindow::Anchor>
+			 ((int32_t) QtWaylandShellHelpers::QLayerShellWindow::Anchor::Top |
+			 (int32_t) QtWaylandShellHelpers::QLayerShellWindow::Anchor::Left |
+			 (int32_t) QtWaylandShellHelpers::QLayerShellWindow::Anchor::Right));
+
+	QWidget *hello = new QLabel("This is a wlr-layer-shell panel.");
+	hbox->addWidget(hello);
+
+	return panel;
+}
 
 QWidget *
 make_example_xdg_toplevel_window()
@@ -52,6 +72,10 @@ main(int argc, char **argv)
 	vbox->addWidget(newXdgWindow);
 
 	auto newLayerShellWindow = new QPushButton("Open new wlr-layer-shell panel");
+	QWidget::connect(newLayerShellWindow, &QAbstractButton::clicked, [=] (bool checked) {
+		auto win = make_example_panel();
+		win->show();
+	});
 	vbox->addWidget(newLayerShellWindow);
 
 	root->show();
