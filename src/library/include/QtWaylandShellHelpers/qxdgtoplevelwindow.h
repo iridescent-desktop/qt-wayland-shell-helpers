@@ -57,10 +57,10 @@ private:
 
     QWaylandShellApplication *mApp = nullptr;
 
-    ::wl_surface *mSurface;
-    ::xdg_surface *mXdgSurface;
-    ::xdg_toplevel *mXdgToplevel;
-    ::zxdg_toplevel_decoration_v1 *mXdgToplevelDecoration;
+    ::wl_surface *mSurface = nullptr;
+    ::xdg_surface *mXdgSurface = nullptr;
+    ::xdg_toplevel *mXdgToplevel = nullptr;
+    ::zxdg_toplevel_decoration_v1 *mXdgToplevelDecoration = nullptr;
 };
 
 }
